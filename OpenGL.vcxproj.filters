@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Util">
+      <UniqueIdentifier>{4dfb85de-cff7-42fb-8fc4-163d1b19feb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{f620d2de-c818-4450-8ac6-bfe69518cc2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{610b6b53-003a-4d7d-b37e-f545353044cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{dfb44434-b707-4cee-bc06-6e5d8f6a77fb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GLEXT.H">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="gltools.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="lodepng.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GLManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lodepng.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="GLManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
