@@ -7,7 +7,7 @@
 // 콜백 함수
 void ChangeSize(int w, int h)                           { GLManager::getInstance()->Resize(w, h); }
 void RenderScene()                                      { GLManager::getInstance()->Render(); }
-void TimerFunc(int value)                               { GLManager::getInstance()->MainLoop(); glutTimerFunc(value, TimerFunc, value); }
+void IdleFunc()                                         { GLManager::getInstance()->MainLoop();}
 void DoMouseClick(int button, int state, int x, int y)  { InputManager::getInstance()->SetMouseState(button, state ^ 1); }
 void DoMouseDrag(int x, int y)                          { InputManager::getInstance()->SetMousePos(x, y); }
 void DoMouseMove(int x, int y)                          { InputManager::getInstance()->SetMousePos(x, y); }
@@ -36,7 +36,7 @@ void GLManager::Init()
 
     glutReshapeFunc(ChangeSize);
     glutDisplayFunc(RenderScene);
-    glutTimerFunc(1, TimerFunc, 1);
+    glutIdleFunc(IdleFunc);
 
     glutMouseFunc(DoMouseClick);
     glutMotionFunc(DoMouseDrag);
@@ -81,10 +81,6 @@ void GLManager::MainLoop()
 void GLManager::Update(float dt)
 {
     m_Camera->Update(dt);
- 
-    auto input = InputManager::getInstance();
-    if (input->GetKeyState('q'))
-        exit(-1);
 }
 
 void GLManager::Render()
@@ -93,11 +89,7 @@ void GLManager::Render()
 
     glPushMatrix();
     {
-        glRotatef(m_Camera->GetRotX(), 1.0f, 0.0f, 0.0f);
-        glRotatef(m_Camera->GetRotY(), 0.0f, 1.0f, 0.0f);
-        glTranslatef(m_Camera->GetPosX(), 0.0f, 0.0f);
-        glTranslatef(0.0f, m_Camera->GetPosY(), 0.0f);
-        glTranslatef(0.0f, 0.0f, m_Camera->GetPosZ());
+        glMultMatrixf(m_Camera->View());
 
 //         glEnable(GL_LIGHTING);
 //         glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
@@ -109,19 +101,19 @@ void GLManager::Render()
 
         glPushMatrix();
         {
-            glTranslatef(-2.0f, 0.0f, 0.0f);
+            glTranslatef(-10.0f, 0.0f, 0.0f);
             glBindTexture(GL_TEXTURE_2D, m_TextureIDList[0]);
             glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-            glutSolidTeapot(1.0f);
+            glutSolidTeapot(10.0f);
         }
         glPopMatrix();
 
         glPushMatrix();
         {
-            glTranslatef(+2.0f, 0.0f, 0.0f);
+            glTranslatef(+10.0f, 0.0f, 0.0f);
             glBindTexture(GL_TEXTURE_2D, m_TextureIDList[1]);
             glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-            glutSolidTeapot(1.0f);
+            glutSolidTeapot(10.0f);
         }
         glPopMatrix();
     }
@@ -137,7 +129,7 @@ void GLManager::Resize(int w, int h)
     m_ClientHeight = h;
 
     GLfloat fAspect = (GLfloat)w / (GLfloat)h;
-    m_Camera->SetLens(0.25f*3.141592f, fAspect, 1.0f, 1000.0f);
+    m_Camera->SetLens(45.0f, fAspect, 1.0f, 1000.0f);
 }
 
 

@@ -4,20 +4,18 @@
 #include <windows.h>
 #include <gl/glut.h>
 #include <math.h>
+#include "gltools.h"
+
+typedef GLfloat GLTVector2[2];      // Two component floating point vector
+typedef GLfloat GLTVector3[3];      // Three component floating point vector
+typedef GLfloat GLTVector4[4];      // Four component floating point vector
+typedef GLfloat GLTMatrix[16];      // A column major 4x4 matrix of type GLfloat
 
 class Camera
 {
 public:
     Camera();
     ~Camera();
-
-    GLfloat GetPosX(){ return m_PosX; }
-    GLfloat GetPosY(){ return m_PosY; }
-    GLfloat GetPosZ(){ return m_PosZ; }
-
-    GLfloat GetRotX(){ return m_RotX; }
-    GLfloat GetRotY(){ return m_RotY; }
-    GLfloat GetRotZ(){ return m_RotZ; }
 
     GLfloat GetNearZ() const { return m_NearZ; }
     GLfloat GetFarZ() const { return m_FarZ; }
@@ -34,10 +32,13 @@ public:
     GLfloat GetFarWindowWidth() const { return m_Aspect * m_FarWindowHeight; }
     GLfloat GetFarWindowHeight() const { return m_FarWindowHeight; }
 
+    GLfloat* View(){ return m_View; }
 
 public:
     void SetLens(GLfloat fovY, GLfloat aspect, GLfloat zn, GLfloat zf);
     void Update(float dt);
+
+    void LookAt(GLTVector3 pos, GLTVector3 target, GLTVector3 worldUp);
 
     void Strafe(GLfloat d);
     void Walk(GLfloat d);
@@ -49,21 +50,21 @@ public:
 	void UpdateViewMatrix();
 
 private:
-    GLfloat m_PosX;
-    GLfloat m_PosY;
-    GLfloat m_PosZ;
+    GLTVector3  m_Position;
+    GLTVector3  m_Right;
+    GLTVector3  m_Up;
+    GLTVector3  m_Look;
 
-    GLfloat m_RotX;
-    GLfloat m_RotY;
-    GLfloat m_RotZ;
+    GLfloat     m_NearZ;
+    GLfloat     m_FarZ;
+    GLfloat     m_Aspect;
+    GLfloat     m_FovY;
 
-    GLfloat m_NearZ;
-    GLfloat m_FarZ;
-    GLfloat m_Aspect;
-    GLfloat m_FovY;
+    GLfloat     m_NearWindowHeight;
+    GLfloat     m_FarWindowHeight;
 
-    GLfloat m_NearWindowHeight;
-    GLfloat m_FarWindowHeight;
+    GLTMatrix   m_View;
+    GLTMatrix   m_Proj;
 };
 
 #endif // CAMERA_H

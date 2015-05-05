@@ -56,5 +56,8 @@
     <ClCompile Include="GameTimer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="gltools.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
