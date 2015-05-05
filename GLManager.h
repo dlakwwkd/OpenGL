@@ -1,4 +1,5 @@
 #pragma once
+#define GLUT_DISABLE_ATEXIT_HACK
 #include <windows.h>
 #include <gl/glut.h>
 #include <math.h>

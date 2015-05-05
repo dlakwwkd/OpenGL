@@ -34,8 +34,8 @@ void GLManager::Init()
     glutInitWindowPosition(0, 0);
     glutCreateWindow(m_Title.c_str());
 
-    glutReshapeFunc(ChangeSize);
     glutDisplayFunc(RenderScene);
+    glutReshapeFunc(ChangeSize);
     glutIdleFunc(IdleFunc);
 
     glutMouseFunc(DoMouseClick);
