@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include "GameTimer.h"
 #include "Camera.h"
+#include "Light.h"
 
 
 // 콜백 함수
@@ -50,6 +51,7 @@ void GLManager::Init()
     m_Camera = new Camera();
 
     SetupRC();
+    SetLight();
     LoadTexture();
 }
 
@@ -57,6 +59,7 @@ void GLManager::Release()
 {
     delete m_Timer;
     delete m_Camera;
+    delete m_Light;
 }
 
 void GLManager::Run()
@@ -81,6 +84,11 @@ void GLManager::MainLoop()
 void GLManager::Update(float dt)
 {
     m_Camera->Update(dt);
+
+    if (InputManager::getInstance()->GetMouseState(GLUT_RIGHT_BUTTON))
+        return;
+
+    m_Light->Update(dt);
 }
 
 void GLManager::Render()
@@ -90,12 +98,7 @@ void GLManager::Render()
     glPushMatrix();
     {
         glMultMatrixf(m_Camera->View());
-
-//         glEnable(GL_LIGHTING);
-//         glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-//         glLightfv(GL_LIGHT0, GL_DIFFUSE, dif);
-//         glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-//         glEnable(GL_LIGHT0);
+        m_Light->Render();
 
         glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -103,7 +106,7 @@ void GLManager::Render()
         {
             glTranslatef(-10.0f, 0.0f, 0.0f);
             glBindTexture(GL_TEXTURE_2D, m_TextureIDList[0]);
-            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
             glutSolidTeapot(10.0f);
         }
         glPopMatrix();
@@ -112,7 +115,7 @@ void GLManager::Render()
         {
             glTranslatef(+10.0f, 0.0f, 0.0f);
             glBindTexture(GL_TEXTURE_2D, m_TextureIDList[1]);
-            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
             glutSolidTeapot(10.0f);
         }
         glPopMatrix();
@@ -137,7 +140,22 @@ void GLManager::Resize(int w, int h)
 void GLManager::SetupRC()
 {
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+//     glEnable(GL_CULL_FACE);
+//     glFrontFace(GL_CW);
+    glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
+}
+
+void GLManager::SetLight()
+{
+    m_Light = new Light();
+
+    GLfloat amb[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+    GLfloat dif[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+    GLfloat pos[] = { -50.0f, 50.0f, 100.0f, 1.0f };
+
+    m_Light->Init(GL_LIGHT0, amb, dif, pos);
 }
 
 void GLManager::LoadTexture()

@@ -71,6 +71,7 @@
     <ClInclude Include="GLManager.h" />
     <ClInclude Include="gltools.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="lodepng.h" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +80,7 @@
     <ClCompile Include="GLManager.cpp" />
     <ClCompile Include="gltools.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

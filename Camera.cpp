@@ -7,7 +7,7 @@
 
 Camera::Camera()
 {
-    m_Position[0]   = 0.0f; m_Position[1]   = 0.0f; m_Position[2]   = 0.0f;
+    m_Position[0]   = 0.0f; m_Position[1]   = 0.0f; m_Position[2]   = 100.0f;
     m_Right[0]      = 1.0f; m_Right[1]      = 0.0f; m_Right[2]      = 0.0f;
     m_Up[0]         = 0.0f; m_Up[1]         = 1.0f; m_Up[2]         = 0.0f;
     m_Look[0]       = 0.0f; m_Look[1]       = 0.0f; m_Look[2]       = 1.0f;
