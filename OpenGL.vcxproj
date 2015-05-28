@@ -65,6 +65,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GLEXT.H" />
@@ -73,8 +74,12 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="lodepng.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Teapot.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GLManager.cpp" />
@@ -83,6 +88,9 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Teapot.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

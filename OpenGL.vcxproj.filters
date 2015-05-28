@@ -13,6 +13,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{dfb44434-b707-4cee-bc06-6e5d8f6a77fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{1b3070e8-adce-4d21-a409-6e066e55c441}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLEXT.H">
@@ -39,6 +42,18 @@
     <ClInclude Include="Light.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Teapot.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lodepng.cpp">
@@ -64,6 +79,18 @@
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Teapot.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

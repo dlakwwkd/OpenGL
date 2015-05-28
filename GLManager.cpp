@@ -3,6 +3,9 @@
 #include "GameTimer.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Teapot.h"
+#include "Sphere.h"
+#include "Box.h"
 
 
 // 콜백 함수
@@ -26,6 +29,7 @@ GLManager::GLManager()
 
 GLManager::~GLManager()
 {
+    Release();
 }
 
 void GLManager::Init()
@@ -52,7 +56,7 @@ void GLManager::Init()
 
     SetupRC();
     SetLight();
-    LoadTexture();
+    SetObject();
 }
 
 void GLManager::Release()
@@ -60,16 +64,18 @@ void GLManager::Release()
     delete m_Timer;
     delete m_Camera;
     delete m_Light;
+    for (auto& object : m_ObjectList)
+    {
+        delete object;
+    }
+    m_ObjectList.clear();
 }
 
 void GLManager::Run()
 {
     Init();
-    {
-        m_Timer->Reset();
-        glutMainLoop();
-    }
-    Release();
+    m_Timer->Reset();
+    glutMainLoop();
 }
 
 void GLManager::MainLoop()
@@ -89,39 +95,25 @@ void GLManager::Update(float dt)
         return;
 
     m_Light->Update(dt);
+    for (auto& object : m_ObjectList)
+    {
+        object->Update(dt);
+    }
 }
 
 void GLManager::Render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glPushMatrix();
     {
         glMultMatrixf(m_Camera->View());
         m_Light->Render();
-
-        glColor3f(1.0f, 1.0f, 1.0f);
-
-        glPushMatrix();
+        for (auto& object : m_ObjectList)
         {
-            glTranslatef(-10.0f, 0.0f, 0.0f);
-            glBindTexture(GL_TEXTURE_2D, m_TextureIDList[0]);
-            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-            glutSolidTeapot(10.0f);
+            object->Render();
         }
-        glPopMatrix();
-
-        glPushMatrix();
-        {
-            glTranslatef(+10.0f, 0.0f, 0.0f);
-            glBindTexture(GL_TEXTURE_2D, m_TextureIDList[1]);
-            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-            glutSolidTeapot(10.0f);
-        }
-        glPopMatrix();
     }
     glPopMatrix();
-
     glutSwapBuffers();
 }
 
@@ -141,6 +133,7 @@ void GLManager::SetupRC()
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
 //     glEnable(GL_CULL_FACE);
 //     glFrontFace(GL_CW);
     glShadeModel(GL_SMOOTH);
@@ -158,42 +151,15 @@ void GLManager::SetLight()
     m_Light->Init(GL_LIGHT0, amb, dif, pos);
 }
 
-void GLManager::LoadTexture()
+void GLManager::SetObject()
 {
-    int textureNum = 2;
+    m_ObjectList.push_back(new Teapot());
+    m_ObjectList.push_back(new Sphere());
+    m_ObjectList.push_back(new Box());
 
-    glGenTextures(textureNum, m_TextureIDList);
-
-    BindTexture2D(m_TextureIDList[0], "Texture/texture.png", false);
-    BindTexture2D(m_TextureIDList[1], "Texture/texture2.png", true);
-}
-
-void GLManager::BindTexture2D(GLuint texID, const std::string& file, bool mipmapOn)
-{
-    std::vector<unsigned char> image;
-    unsigned int width, height, error;
-
-    error = lodepng::decode(image, width, height, file);
-    if (error)
-        printf("error %u: %s\n", error, lodepng_error_text(error));
-    printf("\nimage size is %i", image.size());
-
-    glBindTexture(GL_TEXTURE_2D, texID);
-    glEnable(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    if (mipmapOn)
+    for (auto& object : m_ObjectList)
     {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-    }
-    else
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+        object->Init();
     }
 }
-
 
