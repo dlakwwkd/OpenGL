@@ -15,6 +15,6 @@ public:
     virtual void    LoadTexture(const std::string& file, bool mipmapOn);
 
 private:
-
+    GLUquadricObj* m_Qobj;
 };
 

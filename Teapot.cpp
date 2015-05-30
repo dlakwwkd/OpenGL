@@ -21,7 +21,7 @@ void Teapot::Init()
     m_TexID = 0;
     m_TexEnv = GL_MODULATE;
 
-    //LoadTexture("Texture/texture2.png", true);
+    LoadTexture("Texture/texture2.png", true);
 }
 
 void Teapot::Release()

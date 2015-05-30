@@ -22,11 +22,17 @@ void Sphere::Init()
     m_TexEnv = GL_MODULATE;
 
     LoadTexture("Texture/texture.png", true);
+
+    m_Qobj = gluNewQuadric();
+    gluQuadricDrawStyle(m_Qobj, GLU_FILL);
+    gluQuadricTexture(m_Qobj, GL_TRUE);
+    gluQuadricNormals(m_Qobj, GLU_SMOOTH);
 }
 
 void Sphere::Release()
 {
     Object::Release();
+    gluDeleteQuadric(m_Qobj);
 }
 
 void Sphere::Update(float dt)
@@ -40,11 +46,7 @@ void Sphere::Render()
     glPushMatrix();
     {
         Object::Render();
-        GLUquadricObj *sphere = gluNewQuadric();
-        gluQuadricDrawStyle(sphere, GLU_FILL);
-        gluQuadricTexture(sphere, GL_TRUE);
-        gluQuadricNormals(sphere, GLU_SMOOTH);
-        gluSphere(sphere, m_Size, m_Size * 10, m_Size * 10);
+        gluSphere(m_Qobj, m_Size, m_Size * 10, m_Size * 10);
     }
     glPopMatrix();
 }

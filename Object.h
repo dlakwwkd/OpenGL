@@ -1,9 +1,32 @@
 #pragma once
 #include "gltools.h"
 #include <string>
+#include <vector>
 
 class Object
 {
+public:
+    struct Vertex
+    {
+        Vertex(){}
+        Vertex(
+            GLfloat px, GLfloat py, GLfloat pz,
+            GLfloat nx, GLfloat ny, GLfloat nz,
+            GLfloat cr, GLfloat cg, GLfloat cb)
+        {
+            Position[0] = px; Position[1] = py; Position[2] = pz;
+            Normal[0] = nx; Normal[1] = ny; Normal[2] = nz;
+            Color[0] = cr; Color[1] = cg; Color[2] = cb;
+        }
+        GLfloat Position[3];
+        GLfloat Normal[3];
+        GLfloat Color[3];
+    };
+    struct MeshData
+    {
+        std::vector<Vertex> Vertices;
+        std::vector<UINT> Indices;
+    };
 public:
     Object();
     virtual ~Object();
@@ -19,11 +42,13 @@ private:
     void            BindTexture2D(GLuint texID, const std::string& file, bool mipmapOn);
 
 protected:
-    GLfloat m_Pos[3];
-    GLfloat m_Color[3];
-    GLfloat m_Size;
+    GLfloat     m_Pos[3];
+    GLfloat     m_Color[3];
+    GLfloat     m_Size;
 
-    GLuint  m_TexID;
-    GLint   m_TexEnv;
+    GLuint      m_TexID;
+    GLint       m_TexEnv;
+
+    MeshData    m_Mesh;
 };
 

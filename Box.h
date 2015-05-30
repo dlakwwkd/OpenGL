@@ -15,6 +15,7 @@ public:
     virtual void    LoadTexture(const std::string& file, bool mipmapOn);
 
 private:
-
+    void DrawVertex();
+    void CreateVertex();
 };
 
