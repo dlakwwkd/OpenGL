@@ -54,6 +54,12 @@
     <ClInclude Include="Box.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="TwoDBox.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Spring.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lodepng.cpp">
@@ -90,6 +96,12 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TwoDBox.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Spring.cpp">
       <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>

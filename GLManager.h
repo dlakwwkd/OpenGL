@@ -31,6 +31,8 @@ private:
     void SetupRC();
     void SetLight();
     void SetObject();
+    void ChangeMode();
+    void CollisionCheckMove(float dt);
 
 private:
     GLManager();
@@ -40,10 +42,13 @@ private:
     Camera*                 m_Camera;
     Light*                  m_Light;
 
-    std::vector<Object*>    m_ObjectList;
+    std::vector<std::vector<Object*>> m_ObjectTypeList;
 
     std::string             m_Title;
     int                     m_ClientWidth;
     int                     m_ClientHeight;
+
+    int                     m_TestMode;
+    bool                    m_Is3D;
 };
 

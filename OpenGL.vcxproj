@@ -76,7 +76,9 @@
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Spring.h" />
     <ClInclude Include="Teapot.h" />
+    <ClInclude Include="TwoDBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
@@ -90,7 +92,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Spring.cpp" />
     <ClCompile Include="Teapot.cpp" />
+    <ClCompile Include="TwoDBox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

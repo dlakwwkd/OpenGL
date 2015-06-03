@@ -31,6 +31,11 @@ public:
     Object();
     virtual ~Object();
 
+    GLfloat         GetPosX() const { return m_Pos[0]; }
+    GLfloat         GetPosY() const { return m_Pos[1]; }
+    GLfloat         GetPosZ() const { return m_Pos[2]; }
+    GLfloat         GetSize() const { return m_Size; }
+
     virtual void    Init();
     virtual void    Release();
     virtual void    Update(float dt);

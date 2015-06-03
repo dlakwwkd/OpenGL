@@ -6,6 +6,8 @@
 #include "Teapot.h"
 #include "Sphere.h"
 #include "Box.h"
+#include "TwoDBox.h"
+#include "Spring.h"
 
 
 // 콜백 함수
@@ -22,7 +24,9 @@ GLManager::GLManager()
     m_Camera(nullptr),
     m_Title("OpenGL Templete"),
     m_ClientWidth(800),
-    m_ClientHeight(600)
+    m_ClientHeight(600),
+    m_TestMode(1),
+    m_Is3D(false)
 {
 }
 
@@ -47,10 +51,6 @@ void GLManager::Init()
     glutMotionFunc(DoMouseDrag);
     glutPassiveMotionFunc(DoMouseMove);
 
-    // 키보드 입력은 콜백함수 대신 윈도우API의 GetKeyboardState()를 이용함
-    // glutSpecialFunc(KeyControl);
-    // glutKeyboardFunc(NormalkeyInput);
-
     m_Timer = new GameTimer();
     m_Camera = new Camera();
 
@@ -64,11 +64,15 @@ void GLManager::Release()
     delete m_Timer;
     delete m_Camera;
     delete m_Light;
-    for (auto& object : m_ObjectList)
+
+    for (auto& type : m_ObjectTypeList)
     {
-        delete object;
+        for (auto& object : type)
+        {
+            delete object;
+        }
     }
-    m_ObjectList.clear();
+    m_ObjectTypeList.clear();
 }
 
 void GLManager::Run()
@@ -81,6 +85,8 @@ void GLManager::Run()
 void GLManager::MainLoop()
 {
     InputManager::getInstance()->SetKeyState();
+    ChangeMode();
+
     m_Timer->Tick();
     Update(m_Timer->DeltaTime());
     Render();
@@ -89,13 +95,17 @@ void GLManager::MainLoop()
 
 void GLManager::Update(float dt)
 {
-    m_Camera->Update(dt);
+    if (m_Is3D)
+    {
+        m_Camera->Update(dt);
+        m_Light->Update(dt);
+    }
 
-    if (InputManager::getInstance()->GetMouseState(GLUT_RIGHT_BUTTON))
-        return;
+    if (m_TestMode == 1)
+        CollisionCheckMove(dt);
 
-    m_Light->Update(dt);
-    for (auto& object : m_ObjectList)
+    auto objectList = m_ObjectTypeList[m_TestMode];
+    for (auto& object : objectList)
     {
         object->Update(dt);
     }
@@ -103,12 +113,20 @@ void GLManager::Update(float dt)
 
 void GLManager::Render()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (m_Is3D)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    else
+        glClear(GL_COLOR_BUFFER_BIT);
+
     glPushMatrix();
     {
-        glMultMatrixf(m_Camera->View());
-        m_Light->Render();
-        for (auto& object : m_ObjectList)
+        if (m_Is3D)
+        {
+            glMultMatrixf(m_Camera->View());
+            m_Light->Render();
+        }
+        auto objectList = m_ObjectTypeList[m_TestMode];
+        for (auto& object : objectList)
         {
             object->Render();
         }
@@ -123,8 +141,27 @@ void GLManager::Resize(int w, int h)
     m_ClientWidth = w;
     m_ClientHeight = h;
 
-    GLfloat fAspect = (GLfloat)w / (GLfloat)h;
-    m_Camera->SetLens(45.0f, fAspect, 1.0f, 1000.0f);
+    if (m_Is3D)
+    {
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHTING);
+
+        GLfloat fAspect = (GLfloat)w / (GLfloat)h;
+        m_Camera->SetLens(45.0f, fAspect, 1.0f, 1000.0f);
+    }
+    else
+    {
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_LIGHTING);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        glOrtho(-m_ClientWidth, m_ClientWidth, -m_ClientHeight, m_ClientHeight, 1.0f, -1.0f);
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
 }
 
 
@@ -134,8 +171,6 @@ void GLManager::SetupRC()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
-//     glEnable(GL_CULL_FACE);
-//     glFrontFace(GL_CW);
     glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 }
@@ -153,13 +188,88 @@ void GLManager::SetLight()
 
 void GLManager::SetObject()
 {
-    m_ObjectList.push_back(new Teapot());
-    m_ObjectList.push_back(new Sphere());
-    m_ObjectList.push_back(new Box());
+    m_ObjectTypeList.resize(5);
 
-    for (auto& object : m_ObjectList)
+    m_ObjectTypeList[1].push_back(new TwoDBox());
+    m_ObjectTypeList[1].push_back(new TwoDBox());
+    m_ObjectTypeList[1].push_back(new TwoDBox());
+    m_ObjectTypeList[1].push_back(new TwoDBox());
+    m_ObjectTypeList[1].push_back(new TwoDBox());
+    m_ObjectTypeList[1].push_back(new TwoDBox());
+    m_ObjectTypeList[2].push_back(new Spring());
+    m_ObjectTypeList[3].push_back(new Box());
+    m_ObjectTypeList[4].push_back(new Sphere());
+
+    for (auto& type : m_ObjectTypeList)
     {
-        object->Init();
+        for (auto& object : type)
+        {
+            object->Init();
+        }
+    }
+}
+
+void GLManager::ChangeMode()
+{
+    auto input = InputManager::getInstance();
+
+    if (input->GetKeyState('1'))
+        m_TestMode = 1;
+    else if (input->GetKeyState('2'))
+        m_TestMode = 2;
+    else if (input->GetKeyState('3'))
+        m_TestMode = 3;
+    else if (input->GetKeyState('4'))
+        m_TestMode = 4;
+    else
+        return;
+
+    if (m_TestMode > 1)
+        m_Is3D = true;
+    else
+        m_Is3D = false;
+
+    Resize(m_ClientWidth, m_ClientHeight);
+}
+
+void GLManager::CollisionCheckMove(float dt)
+{
+    for (auto& object : m_ObjectTypeList[1])
+    {
+        auto box = dynamic_cast<TwoDBox*>(object);
+
+        auto r = box->GetPosX() + box->GetSize();
+        auto l = box->GetPosX() - box->GetSize();
+        auto t = box->GetPosY() + box->GetSize();
+        auto b = box->GetPosY() - box->GetSize();
+
+        if (r > m_ClientWidth)          box->SetMoveDirX(-1.0f);
+        else if (l < -m_ClientWidth)    box->SetMoveDirX(+1.0f);
+        else if (t > m_ClientHeight)    box->SetMoveDirY(-1.0f);
+        else if (b < -m_ClientHeight)   box->SetMoveDirY(+1.0f);
+            
+        for (auto& others : m_ObjectTypeList[1])
+        {
+            if (others == box)
+                continue;
+
+            auto r2 = others->GetPosX() + others->GetSize();
+            auto l2 = others->GetPosX() - others->GetSize();
+            auto t2 = others->GetPosY() + others->GetSize();
+            auto b2 = others->GetPosY() - others->GetSize();
+
+            if (r > l2 &&
+                l < r2 &&
+                t > b2 &&
+                b < t2)
+            {
+                if (r - l2 < 5.0f)      box->SetMoveDirX(-1.0f);
+                else if (r2 - l < 5.0f) box->SetMoveDirX(+1.0f);
+                else if (t - b2 < 5.0f) box->SetMoveDirY(-1.0f);
+                else if (t2 - b < 5.0f) box->SetMoveDirY(+1.0f);
+                box->Collision();
+            }
+        }
     }
 }
 

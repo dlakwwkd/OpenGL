@@ -15,7 +15,7 @@ void Sphere::Init()
 {
     Object::Init();
 
-    m_Pos[0]    = -15.0f;    m_Pos[1] = 0.0f;    m_Pos[2]   = 0.0f;
+    m_Pos[0]    = 0.0f;    m_Pos[1] = 0.0f;    m_Pos[2]   = 0.0f;
     m_Color[0]  = 0.0f;    m_Color[1] = 0.0f;    m_Color[2] = 0.0f;
     m_Size = 10.0f;
     m_TexID = 0;
