@@ -67,6 +67,7 @@
   <ItemGroup>
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Earth.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GLEXT.H" />
     <ClInclude Include="GLManager.h" />
@@ -74,15 +75,20 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="lodepng.h" />
+    <ClInclude Include="Mars.h" />
+    <ClInclude Include="Moon.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Planet.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Spring.h" />
+    <ClInclude Include="Sun.h" />
     <ClInclude Include="Teapot.h" />
     <ClInclude Include="TwoDBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Earth.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GLManager.cpp" />
     <ClCompile Include="gltools.cpp" />
@@ -90,9 +96,13 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mars.cpp" />
+    <ClCompile Include="Moon.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Spring.cpp" />
+    <ClCompile Include="Sun.cpp" />
     <ClCompile Include="Teapot.cpp" />
     <ClCompile Include="TwoDBox.cpp" />
   </ItemGroup>

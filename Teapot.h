@@ -12,8 +12,6 @@ public:
     virtual void    Update(float dt);
     virtual void    Render();
 
-    virtual void    LoadTexture(const std::string& file, bool mipmapOn);
-
 private:
 
 };

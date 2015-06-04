@@ -52,6 +52,7 @@ void TwoDBox::Update(float dt)
 
 void TwoDBox::Render()
 {
+    glBindTexture(GL_TEXTURE_2D, m_TexID);
     glPushMatrix();
     {
         glColor3f(m_Color[0], m_Color[1], m_Color[2]);

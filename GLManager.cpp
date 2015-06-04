@@ -8,6 +8,7 @@
 #include "Box.h"
 #include "TwoDBox.h"
 #include "Spring.h"
+#include "Sun.h"
 
 
 // 콜백 함수
@@ -113,10 +114,8 @@ void GLManager::Update(float dt)
 
 void GLManager::Render()
 {
-    if (m_Is3D)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    else
-        glClear(GL_COLOR_BUFFER_BIT);
+    if (m_Is3D) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    else        glClear(GL_COLOR_BUFFER_BIT);
 
     glPushMatrix();
     {
@@ -179,9 +178,9 @@ void GLManager::SetLight()
 {
     m_Light = new Light();
 
-    GLfloat amb[] = { 0.3f, 0.3f, 0.3f, 1.0f };
-    GLfloat dif[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-    GLfloat pos[] = { -50.0f, 50.0f, 100.0f, 1.0f };
+    GLfloat amb[] = { 0.6f, 0.6f, 0.6f, 1.0f };
+    GLfloat dif[] = { 0.9f, 0.9f, 0.9f, 1.0f };
+    GLfloat pos[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
     m_Light->Init(GL_LIGHT0, amb, dif, pos);
 }
@@ -190,15 +189,13 @@ void GLManager::SetObject()
 {
     m_ObjectTypeList.resize(5);
 
-    m_ObjectTypeList[1].push_back(new TwoDBox());
-    m_ObjectTypeList[1].push_back(new TwoDBox());
-    m_ObjectTypeList[1].push_back(new TwoDBox());
-    m_ObjectTypeList[1].push_back(new TwoDBox());
-    m_ObjectTypeList[1].push_back(new TwoDBox());
-    m_ObjectTypeList[1].push_back(new TwoDBox());
+    for (int i = 0; i < 6; ++i)
+    {
+        m_ObjectTypeList[1].push_back(new TwoDBox());
+    }
     m_ObjectTypeList[2].push_back(new Spring());
     m_ObjectTypeList[3].push_back(new Box());
-    m_ObjectTypeList[4].push_back(new Sphere());
+    m_ObjectTypeList[4].push_back(new Sun());
 
     for (auto& type : m_ObjectTypeList)
     {
@@ -213,21 +210,14 @@ void GLManager::ChangeMode()
 {
     auto input = InputManager::getInstance();
 
-    if (input->GetKeyState('1'))
-        m_TestMode = 1;
-    else if (input->GetKeyState('2'))
-        m_TestMode = 2;
-    else if (input->GetKeyState('3'))
-        m_TestMode = 3;
-    else if (input->GetKeyState('4'))
-        m_TestMode = 4;
-    else
-        return;
+    if (input->GetKeyState('1'))        m_TestMode = 1;
+    else if (input->GetKeyState('2'))   m_TestMode = 2;
+    else if (input->GetKeyState('3'))   m_TestMode = 3;
+    else if (input->GetKeyState('4'))   m_TestMode = 4;
+    else return;
 
-    if (m_TestMode > 1)
-        m_Is3D = true;
-    else
-        m_Is3D = false;
+    if (m_TestMode > 1) m_Is3D = true;
+    else                m_Is3D = false;
 
     Resize(m_ClientWidth, m_ClientHeight);
 }

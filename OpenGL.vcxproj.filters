@@ -16,6 +16,9 @@
     <Filter Include="Object">
       <UniqueIdentifier>{1b3070e8-adce-4d21-a409-6e066e55c441}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Planet">
+      <UniqueIdentifier>{242e5b67-7933-48b5-b92d-b138ce00c071}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLEXT.H">
@@ -60,6 +63,21 @@
     <ClInclude Include="Spring.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>Object\Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="Sun.h">
+      <Filter>Object\Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="Earth.h">
+      <Filter>Object\Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="Moon.h">
+      <Filter>Object\Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="Mars.h">
+      <Filter>Object\Planet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lodepng.cpp">
@@ -103,6 +121,21 @@
     </ClCompile>
     <ClCompile Include="Spring.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Object\Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="Sun.cpp">
+      <Filter>Object\Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="Earth.cpp">
+      <Filter>Object\Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="Moon.cpp">
+      <Filter>Object\Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="Mars.cpp">
+      <Filter>Object\Planet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

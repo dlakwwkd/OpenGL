@@ -29,6 +29,7 @@ void Spring::Update(float dt)
 
 void Spring::Render()
 {
+    glBindTexture(GL_TEXTURE_2D, m_TexID);
     glDisable(GL_LIGHTING);
     glPushMatrix();
     {

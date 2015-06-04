@@ -44,8 +44,3 @@ void Teapot::Render()
     }
     glPopMatrix();
 }
-
-void Teapot::LoadTexture(const std::string& file, bool mipmapOn)
-{
-    Object::LoadTexture(file, mipmapOn);
-}

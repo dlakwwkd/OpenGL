@@ -21,8 +21,6 @@ void Sphere::Init()
     m_TexID = 0;
     m_TexEnv = GL_MODULATE;
 
-    LoadTexture("Texture/texture.png", true);
-
     m_Qobj = gluNewQuadric();
     gluQuadricDrawStyle(m_Qobj, GLU_FILL);
     gluQuadricTexture(m_Qobj, GL_TRUE);
@@ -49,9 +47,4 @@ void Sphere::Render()
         gluSphere(m_Qobj, m_Size, m_Size * 10, m_Size * 10);
     }
     glPopMatrix();
-}
-
-void Sphere::LoadTexture(const std::string& file, bool mipmapOn)
-{
-    Object::LoadTexture(file, mipmapOn);
 }

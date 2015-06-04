@@ -47,11 +47,6 @@ void Box::Render()
     glPopMatrix();
 }
 
-void Box::LoadTexture(const std::string& file, bool mipmapOn)
-{
-    Object::LoadTexture(file, mipmapOn);
-}
-
 void Box::DrawVertex()
 {
     glDisable(GL_LIGHTING);

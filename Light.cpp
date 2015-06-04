@@ -20,13 +20,13 @@ void Light::Init(GLenum id, GLfloat* amb, GLfloat* dif, GLfloat* pos)
 
 void Light::Update(float dt)
 {
-    static float t = 0.0f;
-    t += dt;
-    float moveValue = cosf(t)*1.0f;
-
-    m_Pos[0] += moveValue;
-    m_Pos[1] += moveValue;
-    m_Pos[2] += moveValue;
+//     static float t = 0.0f;
+//     t += dt;
+//     float moveValue = cosf(t)*1.0f;
+// 
+//     m_Pos[0] += moveValue;
+//     m_Pos[1] += moveValue;
+//     m_Pos[2] += moveValue;
 }
 
 void Light::Render()

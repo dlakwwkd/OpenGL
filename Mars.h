@@ -1,18 +1,15 @@
 #pragma once
-#include "Object.h"
+#include "Planet.h"
 
-class Sphere : public Object
+class Mars : public Planet
 {
 public:
-    Sphere();
-    virtual ~Sphere();
+    Mars();
+    virtual ~Mars();
 
     virtual void    Init();
     virtual void    Release();
     virtual void    Update(float dt);
     virtual void    Render();
-
-private:
-    GLUquadricObj* m_Qobj;
 };
 
