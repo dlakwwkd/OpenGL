@@ -35,6 +35,11 @@ public:
     GLfloat         GetPosY() const { return m_Pos[1]; }
     GLfloat         GetPosZ() const { return m_Pos[2]; }
     GLfloat         GetSize() const { return m_Size; }
+    void            SetSize(GLfloat size) { m_Size = size; }
+    void            SetPos(GLfloat x, GLfloat y, GLfloat z) { m_Pos[0] = x; m_Pos[1] = y; m_Pos[2] = z; }
+
+    void            SetParents(Object* parents){ m_Parents = parents; }
+    void            AddChild(Object* child){ m_Children.push_back(child); }
 
     virtual void    Init();
     virtual void    Release();
@@ -47,6 +52,9 @@ private:
     void            BindTexture2D(GLuint texID, const std::string& file, bool mipmapOn);
 
 protected:
+    Object*                 m_Parents;
+    std::vector<Object*>    m_Children;
+
     GLfloat     m_Pos[3];
     GLfloat     m_Color[3];
     GLfloat     m_Size;

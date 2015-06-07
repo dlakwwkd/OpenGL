@@ -14,7 +14,11 @@ Object::~Object()
 
 void Object::Init()
 {
-
+    for (auto& child : m_Children)
+    {
+        child->Init();
+        child->SetParents(this);
+    }
 }
 
 void Object::Release()

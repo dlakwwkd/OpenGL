@@ -189,9 +189,13 @@ void GLManager::SetObject()
 {
     m_ObjectTypeList.resize(5);
 
-    for (int i = 0; i < 6; ++i)
+    for (int i = 0; i < 3; ++i)
     {
-        m_ObjectTypeList[1].push_back(new TwoDBox());
+        m_ObjectTypeList[1].push_back(new TwoDBox(400 * i - 400, 150.0f));
+        for (int i = 0; i < 3; ++i)
+        {
+            m_ObjectTypeList[1].back()->AddChild(new TwoDBox(70 * i - 70, 30.0f));
+        }
     }
     m_ObjectTypeList[2].push_back(new Spring());
     m_ObjectTypeList[3].push_back(new Box());
@@ -253,13 +257,15 @@ void GLManager::CollisionCheckMove(float dt)
                 t > b2 &&
                 b < t2)
             {
-                if (r - l2 < 5.0f)      box->SetMoveDirX(-1.0f);
-                else if (r2 - l < 5.0f) box->SetMoveDirX(+1.0f);
-                else if (t - b2 < 5.0f) box->SetMoveDirY(-1.0f);
-                else if (t2 - b < 5.0f) box->SetMoveDirY(+1.0f);
+                auto gap = 20.0f;
+                if (r - l2 < gap)      box->SetMoveDirX(-1.0f);
+                else if (r2 - l < gap) box->SetMoveDirX(+1.0f);
+                else if (t - b2 < gap) box->SetMoveDirY(-1.0f);
+                else if (t2 - b < gap) box->SetMoveDirY(+1.0f);
                 box->Collision();
             }
         }
+        box->ChildCollisionCheck();
     }
 }
 

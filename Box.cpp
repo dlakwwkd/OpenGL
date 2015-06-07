@@ -21,7 +21,6 @@ void Box::Init()
     m_TexID = 0;
     m_TexEnv = GL_MODULATE;
 
-    //LoadTexture("Texture/texture2.png", true);
     CreateVertex();
 }
 
@@ -42,7 +41,6 @@ void Box::Render()
     {
         Object::Render();
         DrawVertex();
-        //glutSolidCube(m_Size);
     }
     glPopMatrix();
 }

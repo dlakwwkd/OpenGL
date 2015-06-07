@@ -5,6 +5,12 @@ TwoDBox::TwoDBox()
 {
 }
 
+TwoDBox::TwoDBox(GLfloat posX, GLfloat size)
+{
+    m_Pos[0] = posX; m_Pos[1] = 0; m_Pos[2] = 0;
+    m_Size = size;
+}
+
 
 TwoDBox::~TwoDBox()
 {
@@ -12,10 +18,9 @@ TwoDBox::~TwoDBox()
 
 void TwoDBox::Init()
 {
-    static float rPos = -800.0f;
-    static int rColor = 5;
+    Object::Init();
+    static int rColor = 1;
 
-    rPos += 230.0f;
     rColor += 1;
     rColor %= 6;
 
@@ -30,9 +35,7 @@ void TwoDBox::Init()
     case 5: g = 1.0f; b = 1.0f; break;
     }
 
-    m_Pos[0] = rPos;    m_Pos[1] = 0;    m_Pos[2] = 0.0f;
     m_Color[0] = r;    m_Color[1] = g;    m_Color[2] = b;
-    m_Size = 100.0f;
     m_TexID = 0;
     m_TexEnv = 0;
 
@@ -48,6 +51,10 @@ void TwoDBox::Update(float dt)
 {
     m_Pos[0] += m_MoveDir[0] * m_MoveSpeed * dt;
     m_Pos[1] += m_MoveDir[1] * m_MoveSpeed * dt;
+    for (auto& child : m_Children)
+    {
+        child->Update(dt);
+    }
 }
 
 void TwoDBox::Render()
@@ -55,11 +62,62 @@ void TwoDBox::Render()
     glBindTexture(GL_TEXTURE_2D, m_TexID);
     glPushMatrix();
     {
+        if (m_Parents)
+        {
+            glTranslatef(m_Parents->GetPosX(), m_Parents->GetPosY(), m_Parents->GetPosZ());
+        }
         glColor3f(m_Color[0], m_Color[1], m_Color[2]);
         glRectf(m_Pos[0] - m_Size, m_Pos[1] - m_Size,
                 m_Pos[0] + m_Size, m_Pos[1] + m_Size);
+
+        for (auto& child : m_Children)
+        {
+            child->Render();
+        }
     }
     glPopMatrix();
+}
+
+void TwoDBox::ChildCollisionCheck()
+{
+    for (auto& child : m_Children)
+    {
+        auto box = dynamic_cast<TwoDBox*>(child);
+
+        auto r = box->GetPosX() + box->GetSize();
+        auto l = box->GetPosX() - box->GetSize();
+        auto t = box->GetPosY() + box->GetSize();
+        auto b = box->GetPosY() - box->GetSize();
+
+        if (r > m_Size)         box->SetMoveDirX(-1.0f);
+        else if (l < -m_Size)   box->SetMoveDirX(+1.0f);
+        else if (t > m_Size)    box->SetMoveDirY(-1.0f);
+        else if (b < -m_Size)   box->SetMoveDirY(+1.0f);
+
+        for (auto& others : m_Children)
+        {
+            if (others == box)
+                continue;
+
+            auto r2 = others->GetPosX() + others->GetSize();
+            auto l2 = others->GetPosX() - others->GetSize();
+            auto t2 = others->GetPosY() + others->GetSize();
+            auto b2 = others->GetPosY() - others->GetSize();
+
+            if (r > l2 &&
+                l < r2 &&
+                t > b2 &&
+                b < t2)
+            {
+                auto gap = 20.0f;
+                if (r - l2 < gap)      box->SetMoveDirX(-1.0f);
+                else if (r2 - l < gap) box->SetMoveDirX(+1.0f);
+                else if (t - b2 < gap) box->SetMoveDirY(-1.0f);
+                else if (t2 - b < gap) box->SetMoveDirY(+1.0f);
+                box->Collision();
+            }
+        }
+    }
 }
 
 void TwoDBox::Collision()

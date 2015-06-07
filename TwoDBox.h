@@ -5,6 +5,7 @@ class TwoDBox : public Object
 {
 public:
     TwoDBox();
+    TwoDBox(GLfloat posX, GLfloat size);
     virtual ~TwoDBox();
 
     virtual void    Init();
@@ -16,6 +17,8 @@ public:
 
     void SetMoveDirX(GLfloat x){ m_MoveDir[0] = x; }
     void SetMoveDirY(GLfloat y){ m_MoveDir[1] = y; }
+
+    void ChildCollisionCheck();
     void Collision();
 
 private:
